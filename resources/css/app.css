@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html { background: #f5f4f0; }
+body { text-rendering: optimizeLegibility; }
+::selection { background: rgba(167, 139, 250, 0.28); color: #211d36; }
+
 .document-editor h1 { font-size: 2rem; font-weight: 700; line-height: 1.25; color: #0f172a; margin: 0 0 1rem; }
 .document-editor h2 { font-size: 1.5rem; font-weight: 650; line-height: 1.35; color: #0f172a; margin: 1.25rem 0 .75rem; }
 .document-editor h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.4; color: #0f172a; }

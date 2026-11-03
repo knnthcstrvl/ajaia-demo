@@ -1,7 +1,6 @@
 import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, router, useForm } from '@inertiajs/react';
@@ -33,18 +32,24 @@ export default function Login({ status, canResetPassword }) {
         <GuestLayout>
             <Head title="Log in" />
 
+            <div className="mb-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.17em] text-violet-600">Welcome back</p>
+                <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Pick up where you left off.</h1>
+                <p className="mt-2 text-sm leading-6 text-slate-500">Your ideas are right where you left them.</p>
+            </div>
+
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">
                     {status}
                 </div>
             )}
 
-            <div className="mb-6 rounded-xl border border-indigo-100 bg-indigo-50/70 p-4">
-                <p className="text-sm font-semibold text-slate-900">Jump into the demo</p>
-                <p className="mt-1 text-xs leading-5 text-slate-500">Choose a role to explore the workspace instantly.</p>
+            <div className="relative mb-7 overflow-hidden rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 via-white to-cyan-50 p-4">
+                <div className="flex items-start gap-3"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-violet-600 shadow-sm">✦</span><div><p className="text-sm font-semibold text-slate-900">Take a quick look around</p>
+                <p className="mt-1 text-xs leading-5 text-slate-500">Jump in as an owner or collaborator.</p></div></div>
                 <div className="mt-3 grid grid-cols-2 gap-2">
-                    <button type="button" onClick={() => loginAs('owner')} disabled={demoProcessing} className="rounded-lg bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60">Login as Owner</button>
-                    <button type="button" onClick={() => loginAs('editor')} disabled={demoProcessing} className="rounded-lg border border-indigo-200 bg-white px-3 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:opacity-60">Login as Editor</button>
+                    <button type="button" onClick={() => loginAs('owner')} disabled={demoProcessing} className="rounded-xl bg-[#211d36] px-3 py-3 text-xs font-semibold text-white shadow-md shadow-indigo-950/10 transition hover:bg-violet-700 disabled:opacity-60">Explore as owner</button>
+                    <button type="button" onClick={() => loginAs('editor')} disabled={demoProcessing} className="rounded-xl border border-violet-200 bg-white/80 px-3 py-3 text-xs font-semibold text-violet-700 transition hover:border-violet-300 hover:bg-white disabled:opacity-60">Explore as editor</button>
                 </div>
             </div>
             <form onSubmit={submit}>
@@ -56,7 +61,7 @@ export default function Login({ status, canResetPassword }) {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-violet-400 focus:ring-violet-400"
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
@@ -73,7 +78,7 @@ export default function Login({ status, canResetPassword }) {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full rounded-xl border-slate-200 px-4 py-3 text-sm shadow-sm focus:border-violet-400 focus:ring-violet-400"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
                     />
@@ -106,11 +111,10 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
+                    <button className="ms-4 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-md shadow-indigo-900/15 transition hover:-translate-y-0.5 hover:shadow-lg disabled:opacity-50" disabled={processing}>Log in</button>
                 </div>
             </form>
+            <p className="mt-6 border-t border-slate-100 pt-5 text-center text-xs text-slate-500">New to Ajaia? <Link href={route('register')} className="font-semibold text-violet-700 hover:text-violet-900">Create an account</Link></p>
         </GuestLayout>
     );
 }
