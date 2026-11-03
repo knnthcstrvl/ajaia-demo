@@ -4,7 +4,8 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -12,6 +13,13 @@ export default function Login({ status, canResetPassword }) {
         password: '',
         remember: false,
     });
+    const [demoProcessing, setDemoProcessing] = useState(false);
+    const loginAs = (role) => {
+        router.post(route('demo.login'), { role }, {
+            onStart: () => setDemoProcessing(true),
+            onFinish: () => setDemoProcessing(false),
+        });
+    };
 
     const submit = (e) => {
         e.preventDefault();
@@ -31,6 +39,14 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             )}
 
+            <div className="mb-6 rounded-xl border border-indigo-100 bg-indigo-50/70 p-4">
+                <p className="text-sm font-semibold text-slate-900">Jump into the demo</p>
+                <p className="mt-1 text-xs leading-5 text-slate-500">Choose a role to explore the workspace instantly.</p>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                    <button type="button" onClick={() => loginAs('owner')} disabled={demoProcessing} className="rounded-lg bg-indigo-600 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-60">Login as Owner</button>
+                    <button type="button" onClick={() => loginAs('editor')} disabled={demoProcessing} className="rounded-lg border border-indigo-200 bg-white px-3 py-2.5 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100 disabled:opacity-60">Login as Editor</button>
+                </div>
+            </div>
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
