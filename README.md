@@ -1,21 +1,23 @@
 # Ajaia AI-Native Full Stack Developer Submission - Kenneth C. Avila
 
-- **Google Drive Deliverables Folder:** https://drive.google.com/drive/folders/1ZpOclulHO2ytqDcMX3Uel3GtQRTkjWXu
-- **Walkthrough Video Link:** https://drive.google.com/drive/folders/1OrbuDC598iVNNNxDuqK1RjxmyeahL82y
-- **Live Deployment Link:** N/A (Configured for Local Execution)
-- **Demo Access:** Use the instant **Login as Owner** (`owner@ajaia.com`) or **Login as Editor** (`editor@ajaia.com`) buttons on the login page. Both seeded accounts use `password` for manual sign-in.
+## Project links
 
-## 1. Local Setup Instructions
+- **Deliverables Drive:** [Google Drive folder](https://drive.google.com/drive/folders/1ZpOclulHO2ytqDcMX3Uel3GtQRTkjWXu)
+- **Video Walkthrough:** [Google Drive video](https://drive.google.com/drive/folders/1OrbuDC598iVNNNxDuqK1RjxmyeahL82y)
+- **GitHub Repo:** [knnthcstrvl/ajaia-demo](https://github.com/knnthcstrvl/ajaia-demo)
 
-### Requirements
+## Environment prerequisites
 
-- PHP 8.3+, Composer
-- Node.js 18+, npm
-- MySQL 8+ (or a compatible local MySQL installation)
+- PHP **8.3+** (the repository's Composer requirements specify PHP `^8.3`; the original assessment brief lists PHP 8.2+)
+- Composer
+- Node.js 18+ and npm
+- MySQL
 
-> The submitted target was Laravel 11; this repository currently installs Laravel 13.40, Inertia Laravel 2.0, React 18, and Tailwind CSS 3. Build and run commands below use the versions installed here.
+The assessment target mentions Laravel 11, but this checkout currently installs Laravel 13.40, Inertia Laravel 2.0, React 18, and Tailwind CSS 3. The implementation and commands below use the versions installed in this repository.
 
-### Install and configure
+## Installation
+
+Clone the repository and install PHP and JavaScript dependencies:
 
 ```bash
 git clone https://github.com/knnthcstrvl/ajaia-demo.git ajaia-docs
@@ -24,7 +26,13 @@ composer install
 npm install --legacy-peer-deps
 ```
 
-Copy `.env.example` to `.env`, then set the local database connection:
+Copy the example environment file and configure MySQL in `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Set the database values in `.env`:
 
 ```dotenv
 DB_CONNECTION=mysql
@@ -35,16 +43,16 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Create the `ajaia_docs` database, then prepare the app and demo data:
+Create the `ajaia_docs` database in MySQL, then generate the application key and initialize the schema and demo data:
 
 ```bash
 php artisan key:generate
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
-For a clean local database reset, use `php artisan migrate:fresh --seed` (this deletes existing tables and data).
+> `migrate:fresh` drops all tables in the configured database before recreating them. Use it only with a disposable local database.
 
-Run both development servers in separate terminals:
+Start the Laravel and Vite development servers in separate terminals:
 
 ```bash
 php artisan serve
@@ -54,35 +62,10 @@ php artisan serve
 npm run dev
 ```
 
-Open `http://127.0.0.1:8000`. The seeder creates the owner and editor demo accounts and a shared sample document.
+Open `http://127.0.0.1:8000`. Use the **Login as Owner** or **Login as Editor** buttons to enter the demo. The demo login provisions its accounts and sample shared document on first use; running the seeder also creates them.
 
-## 2. Architecture Note
+## Related submission notes
 
-### Stack
-
-- **Laravel + Inertia:** Server-side routes, validation, Eloquent persistence, and authorization with a React client and no separate API layer.
-- **React + Tailwind CSS:** A responsive editor and workspace UI built with the dependencies already installed in the repository.
-- **MySQL:** Relational ownership and collaboration data, with rich-text HTML stored in `LONGTEXT`.
-
-### Data model and access
-
-- `documents`: `id`, `user_id` (owner), `title`, `content`, timestamps.
-- `document_user`: `id`, `document_id`, `user_id` (collaborator), `permission` (`view` or `edit`), timestamps and a unique document/user pair.
-- `DocumentPolicy` permits owners and collaborators to open documents, grants edits only to owners and `edit` collaborators, and limits sharing/deletion to owners.
-- Rich text is sanitized server-side to a small formatting allowlist before it is persisted and rendered.
-
-### Deliberate scope
-
-Autosave persists edits without a realtime transport. Simultaneous editing does not currently include live cursors, presence, or conflict resolution; the last saved update wins.
-
-## 3. AI Workflow & Orchestration Note
-
-- **Claude:** High-level architecture, UI layout, and initial policy structure.
-- **OpenAI Codex / ChatGPT:** React components, Laravel routes/controllers, migrations, and feature tests.
-- **Gemini:** Step-by-step debugging and package dependency troubleshooting.
-
-## 4. Feature Breakdown & Submission Status
-
-- **Implemented:** Document creation, rename, rich-text editing (bold, italic, underline, headings, ordered and unordered lists), autosave, reopen, TXT/Markdown import, owner/editor sharing, view/edit policy enforcement, demo login buttons, and feature tests.
-- **Not included:** Realtime multi-cursor editing and version history.
-- **Next 2–4 hours:** Add Laravel Reverb presence/collaboration and version history snapshots.
+- [Architecture](ARCHITECTURE.md)
+- [AI workflow](AI_WORKFLOW.md)
+- [Submission features and roadmap](SUBMISSION.md)
